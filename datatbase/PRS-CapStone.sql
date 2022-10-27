@@ -1,0 +1,67 @@
+USE Master;
+
+CREATE DATABASE CapStone;
+
+USE CapStone;
+
+CREATE TABLE Users(
+ID			INT				NOT NULL IDENTITY	PRIMARY KEY,
+Username	NVARCHAR(30)	NOT NULL UNIQUE,
+Password	NVARCHAR(30)	NOT NULL,	
+FirstName	NVARCHAR(30)	NOT NULL,
+LastName	NVARCHAR(30)	NOT NULL,
+Phone		NVARCHAR(12)	NULL,
+Email		VARCHAR(255)	NULL,
+IsReviewer	BIT				NOT NULL,
+IsAdmin		BIT				NOT NULL
+
+);
+
+CREATE TABLE Vendors(
+ID			INT				NOT NULL	IDENTITY PRIMARY KEY,
+Code		VARCHAR(30)		NOT NULL	UNIQUE,
+Name		NVARCHAR(30)	NOT NULL,
+Address		NVARCHAR(30)	NOT NULL,
+City		VARCHAR(30)		NOT NULL,
+State		VARCHAR(2)		NOT NULL,
+Zip			VARCHAR(5)		NOT NULL,
+Phone		NVARCHAR(12)	NULL,
+Email		VARCHAR(255)	NULL
+
+);
+
+CREATE TABLE Products(
+ID			INT				NOT NULL	IDENTITY PRIMARY KEY, --1,1--
+PartNbr		VARCHAR(30)		NOT NULL	UNIQUE,
+Name		VARCHAR(30)		NOT NULL,
+Price		DECIMAL(11,2)	NOT NULL,
+Unit		VARCHAR(30)		NOT NULL,
+PhotoPath	VARCHAR(255)	NULL,
+VendorID	INT				NOT NULL	REFERENCES Vendors (ID)
+
+);
+
+CREATE TABLE Requests(
+ID					INT				NOT NULL	IDENTITY PRIMARY KEY,  --1,1--
+Description			VARCHAR(80)		NOT NULL,
+Justification		VARCHAR(80)		NOT NULL,
+RejectionReason		VARCHAR(80)		NULL,
+DeliveryMode		VARCHAR(20)		NOT NULL	DEFAULT 'Pickup',	  --Def Pickup--
+SubmittedDate		DATE			NOT NULL,						  --Def current date--
+DateNeeded			DATE			NOT NULL,
+Status				VARCHAR(10)		NOT NULL	DEFAULT 'New',		  --def new--
+Total				DECIMAL(11,2)	NOT NULL	DEFAULT 0,			  --def 0--
+UserID				INT				NOT NULL	REFERENCES Users (ID) --fk to user--
+
+);
+
+CREATE TABLE RequestLines(
+ID			INT		NOT NULL	IDENTITY PRIMARY KEY,				  --1,1--
+RequestID	INT		NOT NULL	REFERENCES Requests (ID),
+ProductID	INT		NOT NULL	REFERENCES Products (ID),
+Quantity	INT		NOT NULL	DEFAULT 1 CHECK (Quantity >= 0)		  --def to 1--
+
+);
+
+
+
