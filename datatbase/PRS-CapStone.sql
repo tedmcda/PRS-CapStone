@@ -1,8 +1,10 @@
 USE Master;
+GO
 
 CREATE DATABASE CapStone;
 
 USE CapStone;
+Go
 
 CREATE TABLE Users(
 ID			INT				NOT NULL IDENTITY	PRIMARY KEY,
@@ -64,4 +66,8 @@ Quantity	INT		NOT NULL	DEFAULT 1 CHECK (Quantity >= 0)		  --def to 1--
 );
 
 
-
+SELECT * FROM Vendors
+SELECT * FROM Users
+SELECT * FROM RequestLines
+SELECT * FROM Requests
+SELECT * FROM Products
